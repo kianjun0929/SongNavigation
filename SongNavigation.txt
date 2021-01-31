@@ -1,0 +1,114 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct NodeType{
+    int SongID;
+    string SongName;
+    
+    NodeType* next;
+    NodeType* prev;
+};
+
+class PlayList{
+public:
+    NodeType* head;
+    NodeType* tail;
+};
+
+NodeType* head = NULL;
+NodeType* tail = NULL;
+NodeType* current = NULL;
+int songSize = 1;
+
+void Add(string SongName) {
+    NodeType* newSong = new NodeType;
+    newSong -> SongID = songSize;
+    newSong -> SongName = SongName;
+    
+    if(head == NULL) {
+        head = tail = current = newSong;
+        newSong -> next = NULL;
+        newSong -> prev = NULL;
+    } else {
+        newSong -> next = NULL;
+        newSong -> prev = tail;
+        tail -> next = newSong;
+        tail = newSong;
+    }
+    songSize++;
+}
+
+void Print() {
+    string inputSongName;
+    if(current != NULL) {
+        cout << "The song now playing is: ";
+        cout << current -> SongName << endl;
+    } else {
+        cout << "The Songlist is finished, please add.\n";
+    }
+    
+}
+
+void PrevSong() {
+    current = current -> prev;
+    Print();
+}
+
+void NextSong() {
+    current = current -> next;
+    Print();
+}
+
+void STOP() {
+    current = head;
+}
+
+int main() {
+    int opt;
+    string inputSongName;
+    
+    cout << "1 - ADD \n2 - PLAY \n3 - NEXT \n4 - PREV \n5 - STOP \n";
+    cout << "Please select your option: ";
+    cin >> opt;
+    
+    do {
+        switch(opt) {
+            case 1:{
+                cout << "Please enter song name: ";
+                cin >> inputSongName;
+                Add(inputSongName);
+                break;
+            }
+            case 2: {
+                Print();
+                break;
+            }
+            case 3: {
+                NextSong();
+                break;
+            }
+            case 4: {
+                PrevSong();
+                break;
+            }
+            case 5: {
+                STOP();
+                break;
+            }
+            default:
+                cout << "INVALID INPUT";
+                break;
+                
+        }
+        
+        cout << "1 - ADD \n2 - PLAY \n3 - NEXT \n4 - PREV \n5 - STOP \n0 - EXIT \n";
+        cout << "Please select your option: ";
+        cin >> opt;
+        
+    } while (opt != 0);
+    
+    
+    return 0;
+}
